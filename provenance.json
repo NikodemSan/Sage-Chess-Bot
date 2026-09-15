@@ -1,0 +1,153 @@
+{
+  "stage": "Stage3ER2-final",
+  "description": "Stage3ER2 search and evaluator with (1) one pinned numba signature per jitted function so the engine imports in ~17 s cold instead of ~37 s, plus a best-effort on-disk numba cache; (2) a repetition strictly inside the search tree scores as a draw (game-history repeats still need a threefold); (3) a 4M-entry transposition table; (4) mop-up extended to two bishops (converts KBB v K, tested) and bishop+knight (corner-of-bishop-colour gradient; direction correct but the mate is not reliably executed at game depth). Node counts on ordinary positions unchanged.. Weights unchanged.",
+  "status": "Final-day build. Each change validated by 40-game self-play at 5s+0.1s against the previous build.",
+  "base_stage3e_zip_sha256": "3ce51d07d153106be939a63c8026bbd0a785ab44de7c2f6c57bcc3089c174312",
+  "weights_sha256": "a125eec4724273573931c69535c88a5847bc6a297b9bce4cfa1ecb97f130c662",
+  "mopup": {
+    "source": "Stage 8E zeval.py mop-up implementation",
+    "enabled_by_default": true,
+    "environment_switch": "SAGE_STAGE3E_MOPUP",
+    "max_total_pieces": 6,
+    "losing_side_requirement": "bare king",
+    "winning_side_requirement": "at least 500 cp non-king material and at least one rook or queen",
+    "edge_weight_cp": 16,
+    "king_proximity_weight_cp": 8,
+    "maximum_geometric_bonus_cp": 88,
+    "implementation": "O(1) evaluation-time gate using incrementally maintained non-king material/major-count summaries in unused NNUE accumulator metadata slots"
+  },
+  "anti_repeat": {
+    "enabled_by_default": true,
+    "environment_switch": "SAGE_STAGE3ER2_ANTI_REPEAT",
+    "trigger": "completed normal root move revisits a prior position in the reversible game history",
+    "minimum_normal_score_cp": 150,
+    "minimum_completed_depth": 6,
+    "minimum_halfmove_clock": 4,
+    "piece_count_gate": null,
+    "material_edge_gate": null,
+    "fresh_move_requirement": true,
+    "rescue_root_policy": "exclude all root moves that revisit prior reversible history",
+    "rescue_max_depth": 8,
+    "rescue_max_time_ms": 80.0,
+    "rescue_acceptance": "completed depth >=6 and rescue score >= +100 cp",
+    "normal_path_overhead": "one post-search revisit check only when score/depth/halfmove gates pass; no second engine or extra TT",
+    "recursive_repetition_logic": "unchanged from Stage3E"
+  },
+  "base_stage3e_provenance": {
+    "stage": "Stage3E",
+    "description": "Exact Sage Stage 3 search/engine/board/NNUE plus the Stage 8E narrowly gated deterministic bare-king mop-up evaluation term. No Stage 7D continuation-history changes, no Stage 8G verifier, and no search-policy changes.",
+    "status": "Experimental candidate; targeted conversion testing required before promotion.",
+    "base_stage3_zip_sha256": "c7509df9ac7f83d69e584fa3dca4485350edac45be9ffc5bd2957df49f531c6d",
+    "weights_sha256": "a125eec4724273573931c69535c88a5847bc6a297b9bce4cfa1ecb97f130c662",
+    "mopup": {
+      "source": "Stage 8E zeval.py mop-up implementation",
+      "enabled_by_default": true,
+      "environment_switch": "SAGE_STAGE3E_MOPUP",
+      "max_total_pieces": 6,
+      "losing_side_requirement": "bare king",
+      "winning_side_requirement": "at least 500 cp non-king material and at least one rook or queen",
+      "edge_weight_cp": 16,
+      "king_proximity_weight_cp": 8,
+      "maximum_geometric_bonus_cp": 88,
+      "implementation": "O(1) evaluation-time gate using incrementally maintained non-king material/major-count summaries in unused NNUE accumulator metadata slots"
+    },
+    "base_stage3_provenance": {
+      "engine": "Sage Stage 3",
+      "code_origin": "User-owned Fable comparison search as supplied with Sage 150M, incrementally modified with AI assistance. Not an independent rewrite and not third-party engine code.",
+      "training": {
+        "checkpoint_sha256": "63701a4e923a1f0f547b83e08a24dda1cef461bd4ee2fcdf6b0ac2c55ef23e3b",
+        "contract": {
+          "baseline_sha256": "008cff7e5229b313a4d40952216175d0e2322ae938ed1a2013097003262ee52d",
+          "cp_scale": 400,
+          "hidden": 256,
+          "inputs": 6144,
+          "king_buckets": 8,
+          "king_region": "2*(rank//2)+(file//4)",
+          "name": "sage",
+          "orientation": "black: colour-swap, rank-flip XOR56; no file mirror",
+          "output": "B_stm + 400 * (dot(SCReLU(acc_stm,acc_other), head[bucket])+bias[bucket])",
+          "output_buckets": 8,
+          "output_region": "min(7,max(0,(pieces-2)//4))",
+          "qa": 255,
+          "qb": 4096,
+          "version": "sl-v1"
+        },
+        "dataset": "b58b12983d37f55fc4de3e4fb9baa024206c29dc1c8ca27570acccfb22d50b69",
+        "trained_from_scratch": true,
+        "training": {
+          "epoch": 1,
+          "row": 0,
+          "samples": 150000000,
+          "shard": 0,
+          "steps": 73777
+        },
+        "verification": {
+          "accumulator_abs_bound": 17801,
+          "max_abs_cp": 14.9974365234375,
+          "mean_abs_cp": 2.0352604943990706,
+          "p99_abs_cp": 7.332896118164051,
+          "passed": true,
+          "rows": 20000,
+          "scaled_dot_abs_bound": 9387841320000,
+          "sign_flip_outside_30cp": 0.0
+        }
+      },
+      "weights_sha256": "a125eec4724273573931c69535c88a5847bc6a297b9bce4cfa1ecb97f130c662",
+      "retraining_performed": false,
+      "source_hashes": {
+        "zsearch.py": "65248148cd758aa1a8cfccc73a0d623d1043b57ede227f93cfd9e95894c349ba",
+        "agent.py": "eafa5ea1f8c83b17a005d6bf01c9fee9da13bdb5fa61a851c2f41a7b9160712e",
+        "sl_spec.py": "b1d2c314d56a04937975e1ba6fcc5259d96510f3c2913c48d370b1e5e176cc8b",
+        "zboard.py": "e6d715868a431f9977b59d91ed27f8a624ec27da06804abde783221057daeabd",
+        "zengine.py": "de1b2b0ff2b332284dff8f3169680fb7b53e37bbaa9c5a2d14443d077c98add2",
+        "zeval.py": "427f761900b7300af051183780bc770be4b92d8b129c07ac00937a407c706435"
+      },
+      "status": "Bounded local validation only. Equal-clock playing strength requires user matches."
+    },
+    "source_hashes": {
+      "agent.py": "587f72f05291ff66127f250be130fe9c3596737b0c0bd72453a5fb50941b02f0",
+      "sl_spec.py": "b1d2c314d56a04937975e1ba6fcc5259d96510f3c2913c48d370b1e5e176cc8b",
+      "weights.npz": "a125eec4724273573931c69535c88a5847bc6a297b9bce4cfa1ecb97f130c662",
+      "zboard.py": "e6d715868a431f9977b59d91ed27f8a624ec27da06804abde783221057daeabd",
+      "zengine.py": "de1b2b0ff2b332284dff8f3169680fb7b53e37bbaa9c5a2d14443d077c98add2",
+      "zeval.py": "0f3ad5fd710935cfc709ad2e24343d89f08abc90fcb1d33bc98c5d001c179fdd",
+      "zsearch.py": "65248148cd758aa1a8cfccc73a0d623d1043b57ede227f93cfd9e95894c349ba"
+    }
+  },
+  "source_hashes": {
+    "agent.py": "70af5a89edaaa1a828bac5be2b63c2ef35d96b3afccbca497ba500b805fb4b4f",
+    "zboard.py": "fd0c8b92527c196277c3afa0d61eada0498d7b140dad3e0a5a755621cb20d995",
+    "zengine.py": "bebbeb5890cd9109a3375c89d3e36a6165939f35998f32eaa436c976ced0b172",
+    "zeval.py": "7f45475ab293d35d50f1203fb9bed6585efe2e8dd96033acbb690973a2a3c435",
+    "zsearch.py": "06219e7a8e8a4b832d737e37ded657ccc3d872e633a45c65d395762c34d14c5b",
+    "sl_spec.py": "b1d2c314d56a04937975e1ba6fcc5259d96510f3c2913c48d370b1e5e176cc8b",
+    "weights.npz": "a125eec4724273573931c69535c88a5847bc6a297b9bce4cfa1ecb97f130c662"
+  },
+  "final_day_changes": {
+    "init": {
+      "before_s": 37.5,
+      "after_cold_s": 17,
+      "after_warm_cache_s": 0.7,
+      "search_output": "byte-identical node counts at fixed depth"
+    },
+    "twofold_repetition": {
+      "result": "+17 =17 -6 vs previous (63.7%)"
+    },
+    "tt_bits_22": {
+      "result": "+13 =20 -7 vs twofold build (57.5%)"
+    },
+    "time_management": {
+      "result": "rejected: more aggressive allocation scored 50%"
+    },
+    "rejected": {
+      "improving_flag+see_prune+history_lmr": "+5 =14 -21 (30%), rejected",
+      "countermove_ordering": "+8 =22 -10 (47.5%), rejected",
+      "int32_eval_products": "identical nodes, no speed change, rejected",
+      "time_allocation": "+10 =20 -10 (50%), rejected",
+      "singular_extensions_with_multicut": "+9 =15 -16 (41%) at 5s+0.1s, and +7 s compile time; rejected",
+      "aggressive_lmr_0.9+lnln/1.9": "+6 =28 -6 (50%); rejected",
+      "spend_30pct_more_clock": "+4 =24 -10 (35%) at 30s+0.25s; rejected"
+    },
+    "high_variance_bundle": "High-variance bundle: eval scaled by remaining material and faded by the fifty-move counter; reverse futility to depth 8 at 70cp/ply; null-move reduction grows with eval margin (up to +2); futility pruning to depth 4 and late-move pruning to depth 5; iteration time redistributed (score drop or changed best move earns more, a move stable for 3 iterations stops at 0.4 soft); transposition table 8M entries (128 MB); dead staged-ordering code removed from the search (2 s less compile). Guard match 40 games 5s+0.1s vs previous build: +11 =20 -9 (52.5%). Table alone: +11 =19 -10 (51.2%)."
+  }
+}
