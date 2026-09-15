@@ -1,0 +1,21 @@
+[Event "?"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "candidate"]
+[Black "opponent"]
+[Result "1-0"]
+[TimeControl "120.0+0.5"]
+
+1. e4 e6 2. d4 d5 3. Nd2 Be7 4. e5 c5 5. Qg4 Kf8 6. Ndf3 Nc6 7. dxc5 Bxc5 8. Bd2 Qc7 9. O-O-O Nge7 10. Kb1 Nxe5 11. Nxe5 Qxe5 12. f4 Qc7 13. Qh5 h6 14. Nf3 Bd7 15. Bd3 Kg8 16. Rhe1 f6 17. Re2 Rf8 18. Rde1 Qc8 19. a3 a6 20. Bc3 Nc6 21. Nh4 Ne7 22. Ng6 Nxg6 23. Bxg6 Qc6 24. Bd2 Qb6 25. Qh3 f5 26. g4 fxg4 27. Qxg4 Bxa3 28. Bc1 h5 29. Qg2 Rh6 30. f5 Rxg6 31. fxg6 Be7 32. Qh3 h4 33. Qg4 Rf5 34. Qxf5 exf5 35. Rxe7 Qxg6 36. Rxd7 b6 37. b3 d4 38. Bb2 Qc6 39. Ree7 Qh1+ 40. Ka2 Qg2 41. Bxd4 Qxc2+ 42. Ka3 Qc1+ 43. Bb2 Qc5+ 44. b4 Qxe7 45. Rxe7 Kf8 46. Rxg7 Ke8 47. Rg5 f4 48. Rf5 Kd7 49. Rxf4 h3 50. Rh4 Kc7 51. Rxh3 Kc6 52. Rh6+ Kb5 53. Kb3 a5 54. Bd4 a4+ 55. Kc3 Ka6 56. Rxb6+ Ka7 57. b5 a3 58. Kc4 a2 59. Kc5 Ka8 60. Kc6 a1=Q 61. Bxa1 Ka7 62. Ra6+ Kb8 63. Be5+ Kc8 64. Ra8# 1-0
+
+[Event "?"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "opponent"]
+[Black "candidate"]
+[Result "1/2-1/2"]
+[TimeControl "120.0+0.5"]
+
+1. e4 e6 2. d4 d5 3. Nd2 Be7 4. e5 c5 5. Qg4 Kf8 6. dxc5 Nc6 7. Ndf3 Bxc5 8. Bd2 h6 9. O-O-O Nge7 10. Nh3 Ng6 11. Nf4 Nxf4 12. Qxf4 Bd7 13. h4 a5 14. g4 Ke8 15. Rg1 g6 16. Be3 Be7 17. Kb1 Rc8 18. a3 Qc7 19. c3 a4 20. Rc1 Na5 21. Nd4 Nc6 22. Nf3 Na5 23. Bd3 Nb3 24. Nd4 Nxc1 25. Rxc1 Qa5 26. Ka1 Bxh4 27. Rh1 Be7 28. Bd2 g5 29. Qe3 Kd8 30. f4 Kc7 31. Qf2 Bc5 32. fxg5 hxg5 33. Bh7 Rcg8 34. Rh5 Rg7 35. Bb1 Rc8 36. Qf6 Rgg8 37. Qxf7 Bxd4 38. Rh7 Rgd8 39. Qxe6 Kb8 40. Rxd7 Rxd7 41. Qxd7 Bxe5 42. Bxg5 d4 43. cxd4 Bxd4 44. Bf4+ Be5 45. Qd4 Rc5 46. Bxe5+ Rxe5 47. Qf4 Ka7 48. Qd4+ Kb8 49. Qf4 Ka7 50. Qd4+ 1/2-1/2

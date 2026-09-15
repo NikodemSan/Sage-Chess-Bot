@@ -1,0 +1,23 @@
+{
+  "table_files": 70,
+  "random_wdl_preservation_positions": 311,
+  "complete_mating_conversions": [
+    {
+      "fen": "8/8/2k5/8/8/3K4/8/Q7 w - - 0 1",
+      "plies_to_mate": 11
+    },
+    {
+      "fen": "8/8/2k5/8/8/3K4/8/R7 w - - 0 1",
+      "plies_to_mate": 19
+    },
+    {
+      "fen": "8/8/2k5/8/8/3K4/8/BN6 w - - 0 1",
+      "plies_to_mate": 53
+    },
+    {
+      "fen": "8/8/2k5/8/8/3K4/8/BB6 w - - 0 1",
+      "plies_to_mate": 25
+    }
+  ],
+  "timeout_restoration": "passed"
+}

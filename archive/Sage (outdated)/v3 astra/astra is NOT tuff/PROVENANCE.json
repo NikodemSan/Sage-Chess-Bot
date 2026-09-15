@@ -1,0 +1,101 @@
+{
+  "name": "Sage Fusion",
+  "default_checkpoint": "150m",
+  "new_training_performed_in_this_build": false,
+  "code_origin": "User-supplied Sage/Fable board, search, feature contract, and evaluation code; revisions made with OpenAI Codex assistance. No third-party engine source was imported or translated.",
+  "training_provenance_scope": "Both supplied weight files state trained_from_scratch=true. Metadata is preserved, not independently established by this build. Original training scripts, datasets, and logs were not attached.",
+  "local_archive_notice": "local_150m.zip described itself as local comparison apparatus and omitted agent.py. This separate submission is deliberately assembled under the current user request; that original notice and provenance have not been silently relabelled as a competition certification.",
+  "models": [
+    {
+      "model": "50m",
+      "file": "models/sage50m.npz",
+      "weights_sha256": "1bc79bbb9e80eb29f88fae549c1ccab0b6d61aea5639235cdc8d84a582f75be6",
+      "source_archive": "Sage50M_Submission.zip",
+      "source_archive_sha256": "0f0b9d86f3304675c9fb55df34ea8f8fc60e3853f1886c4bb7c0fa36ced836b5",
+      "provided_metadata": {
+        "contract": {
+          "name": "sage",
+          "inputs": 6144,
+          "hidden": 256,
+          "king_buckets": 8,
+          "output_buckets": 8,
+          "version": "sl-v1",
+          "qa": 255,
+          "qb": 4096,
+          "cp_scale": 400,
+          "baseline_sha256": "008cff7e5229b313a4d40952216175d0e2322ae938ed1a2013097003262ee52d",
+          "orientation": "black: colour-swap, rank-flip XOR56; no file mirror",
+          "king_region": "2*(rank//2)+(file//4)",
+          "output_region": "min(7,max(0,(pieces-2)//4))",
+          "output": "B_stm + 400 * (dot(SCReLU(acc_stm,acc_other), head[bucket])+bias[bucket])"
+        },
+        "checkpoint_sha256": "a55279ebcfe617144f4a48b44c9e1c8209cd21f176d92b42bd26164153ff919a",
+        "dataset": "084c2dc8686f884f4f715bff62e0089cd520ea10d6b9523578c1dcca1fe017ba",
+        "training": {
+          "epoch": 0,
+          "shard": 255,
+          "row": 250000,
+          "samples": 50000000,
+          "steps": 24593
+        },
+        "verification": {
+          "rows": 20000,
+          "mean_abs_cp": 1.7887199413090944,
+          "p99_abs_cp": 6.131410522460928,
+          "max_abs_cp": 10.423004150390625,
+          "sign_flip_outside_30cp": 0.0,
+          "accumulator_abs_bound": 9792,
+          "scaled_dot_abs_bound": 7303946130000,
+          "passed": true
+        },
+        "trained_from_scratch": true
+      }
+    },
+    {
+      "model": "150m",
+      "file": "models/sage150m.npz",
+      "weights_sha256": "a125eec4724273573931c69535c88a5847bc6a297b9bce4cfa1ecb97f130c662",
+      "source_archive": "local_150m.zip",
+      "source_archive_sha256": "c8004dab24588c226e519304a2b44fc232dafd2ee4f8bddcdafabefd7bc4fba7",
+      "provided_metadata": {
+        "contract": {
+          "name": "sage",
+          "inputs": 6144,
+          "hidden": 256,
+          "king_buckets": 8,
+          "output_buckets": 8,
+          "version": "sl-v1",
+          "qa": 255,
+          "qb": 4096,
+          "cp_scale": 400,
+          "baseline_sha256": "008cff7e5229b313a4d40952216175d0e2322ae938ed1a2013097003262ee52d",
+          "orientation": "black: colour-swap, rank-flip XOR56; no file mirror",
+          "king_region": "2*(rank//2)+(file//4)",
+          "output_region": "min(7,max(0,(pieces-2)//4))",
+          "output": "B_stm + 400 * (dot(SCReLU(acc_stm,acc_other), head[bucket])+bias[bucket])"
+        },
+        "checkpoint_sha256": "63701a4e923a1f0f547b83e08a24dda1cef461bd4ee2fcdf6b0ac2c55ef23e3b",
+        "dataset": "b58b12983d37f55fc4de3e4fb9baa024206c29dc1c8ca27570acccfb22d50b69",
+        "training": {
+          "epoch": 1,
+          "shard": 0,
+          "row": 0,
+          "samples": 150000000,
+          "steps": 73777
+        },
+        "verification": {
+          "rows": 20000,
+          "mean_abs_cp": 2.0352604943990706,
+          "p99_abs_cp": 7.332896118164051,
+          "max_abs_cp": 14.9974365234375,
+          "sign_flip_outside_30cp": 0.0,
+          "accumulator_abs_bound": 17801,
+          "scaled_dot_abs_bound": 9387841320000,
+          "passed": true
+        },
+        "trained_from_scratch": true
+      }
+    }
+  ],
+  "tablebases": "Complete 3/4-piece Syzygy WDL+DTZ data, with published source SHA-256 verification; see tablebases/manifest.json."
+}

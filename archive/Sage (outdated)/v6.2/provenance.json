@@ -1,0 +1,102 @@
+{
+  "stage": "Stage8F",
+  "description": "Exact Stage 8E plus a root-only ordering preference for ordinary pawn pushes under high fifty-move pressure in clearly favorable reduced endings. Descendant ordering, static evaluation, pruning, draw semantics and Stage 8E bare-king mop-up are unchanged.",
+  "status": "Experimental diagnostic candidate; no playing-strength claim.",
+  "base_stage8e_zip_sha256": "0c80b1ce481abc361f9b2d58dc13a1a26bac1208747838bc5bfaa01992c92bf5",
+  "submitted_stage7d_zip_sha256": "b9661dc122011ba0567e9f34886fa03c5114d556c0f71126bccfe33a2c8a1a05",
+  "weights_sha256": "a125eec4724273573931c69535c88a5847bc6a297b9bce4cfa1ecb97f130c662",
+  "progress_ordering": {
+    "enabled_by_default": true,
+    "environment_switch": "SAGE_STAGE8F_PROGRESS",
+    "scope": "root only",
+    "max_total_pieces": 10,
+    "minimum_material_edge_cp": 300,
+    "minimum_raw_static_edge_cp": 150,
+    "halfmove_start": 40,
+    "halfmove_full": 88,
+    "maximum_quiet_pawn_ordering_bonus": 120000,
+    "bonus_examples": {
+      "h42": 5000,
+      "h50": 25000,
+      "h58": 45000,
+      "h70": 75000,
+      "h88_plus": 120000
+    },
+    "applies_to": "ordinary non-capturing root pawn pushes only; captures/promotions keep existing scores and descendants are exact Stage 8E ordering",
+    "static_eval": "exact Stage 8E",
+    "draw_semantics": "unchanged"
+  },
+  "stage8e": {
+    "stage": "Stage8E",
+    "description": "Exact submitted Stage 7D plus a narrowly gated deterministic mop-up evaluation for clearly won bare-king endings. The term rewards driving the bare king toward an edge and bringing the winning king closer. No correction history and no search-policy changes.",
+    "status": "Experimental diagnostic candidate; no playing-strength claim.",
+    "base_zip_sha256": "b9661dc122011ba0567e9f34886fa03c5114d556c0f71126bccfe33a2c8a1a05",
+    "weights_sha256": "a125eec4724273573931c69535c88a5847bc6a297b9bce4cfa1ecb97f130c662",
+    "mopup": {
+      "enabled_by_default": true,
+      "environment_switch": "SAGE_STAGE8E_MOPUP",
+      "max_total_pieces": 6,
+      "losing_side_requirement": "bare king",
+      "winning_side_requirement": "at least 500 cp non-king material and at least one rook or queen",
+      "edge_weight_cp": 16,
+      "king_proximity_weight_cp": 8,
+      "maximum_geometric_bonus_cp": 88,
+      "qsearch_note": "The evaluator is shared by main search and qsearch, so the mop-up term is visible wherever the existing Stage 7D evaluate() is called; no qsearch rule or pruning formula was changed.",
+      "implementation": "O(1) evaluation-time gate using incrementally maintained non-king material/major-count summaries in unused NNUE accumulator metadata slots"
+    },
+    "prior_provenance": {
+      "engine": "Sage Stage 7D",
+      "base": "User-owned Stage 6",
+      "origin": "Original modifications with AI assistance; no external engine source used",
+      "training": {
+        "checkpoint_sha256": "63701a4e923a1f0f547b83e08a24dda1cef461bd4ee2fcdf6b0ac2c55ef23e3b",
+        "contract": {
+          "baseline_sha256": "008cff7e5229b313a4d40952216175d0e2322ae938ed1a2013097003262ee52d",
+          "cp_scale": 400,
+          "hidden": 256,
+          "inputs": 6144,
+          "king_buckets": 8,
+          "king_region": "2*(rank//2)+(file//4)",
+          "name": "sage",
+          "orientation": "black: colour-swap, rank-flip XOR56; no file mirror",
+          "output": "B_stm + 400 * (dot(SCReLU(acc_stm,acc_other), head[bucket])+bias[bucket])",
+          "output_buckets": 8,
+          "output_region": "min(7,max(0,(pieces-2)//4))",
+          "qa": 255,
+          "qb": 4096,
+          "version": "sl-v1"
+        },
+        "dataset": "b58b12983d37f55fc4de3e4fb9baa024206c29dc1c8ca27570acccfb22d50b69",
+        "trained_from_scratch": true,
+        "training": {
+          "epoch": 1,
+          "row": 0,
+          "samples": 150000000,
+          "shard": 0,
+          "steps": 73777
+        },
+        "verification": {
+          "accumulator_abs_bound": 17801,
+          "max_abs_cp": 14.9974365234375,
+          "mean_abs_cp": 2.0352604943990706,
+          "p99_abs_cp": 7.332896118164051,
+          "passed": true,
+          "rows": 20000,
+          "scaled_dot_abs_bound": 9387841320000,
+          "sign_flip_outside_30cp": 0.0
+        }
+      },
+      "weights_sha256": "a125eec4724273573931c69535c88a5847bc6a297b9bce4cfa1ecb97f130c662",
+      "experiment": "Stage 6 plus one-ply continuation-history quiet ordering only. Exact Stage 6 LMR; no improving or history adjustment to reductions.",
+      "status": "Experimental, not promoted; no playing-strength claim",
+      "source_hashes": {
+        "zengine.py": "9cdb78dee2f075cb1fd83d7edf79dc910c6f4bd622a1618fa57861b65d0c6103",
+        "zboard.py": "d437369cbab7b1dc0735fa4ed44263fa49f02fa3a5d4664ebca968cc68de99b0",
+        "zeval.py": "427f761900b7300af051183780bc770be4b92d8b129c07ac00937a407c706435",
+        "agent.py": "9d234887b8e985660ab3bb05e1c53b77f782e1f21756ca475c7bf458f9dbaaaf",
+        "sl_spec.py": "b1d2c314d56a04937975e1ba6fcc5259d96510f3c2913c48d370b1e5e176cc8b",
+        "zsearch.py": "79e3b9bfa31fd232f4ae9f2aee452c938b9c8e7ef58903164dbf7c3786309669"
+      }
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "stage": "Stage3E",
+  "description": "Exact Sage Stage 3 search/engine/board/NNUE plus the Stage 8E narrowly gated deterministic bare-king mop-up evaluation term. No Stage 7D continuation-history changes, no Stage 8G verifier, and no search-policy changes.",
+  "status": "Experimental candidate; targeted conversion testing required before promotion.",
+  "base_stage3_zip_sha256": "c7509df9ac7f83d69e584fa3dca4485350edac45be9ffc5bd2957df49f531c6d",
+  "weights_sha256": "a125eec4724273573931c69535c88a5847bc6a297b9bce4cfa1ecb97f130c662",
+  "mopup": {
+    "source": "Stage 8E zeval.py mop-up implementation",
+    "enabled_by_default": true,
+    "environment_switch": "SAGE_STAGE3E_MOPUP",
+    "max_total_pieces": 6,
+    "losing_side_requirement": "bare king",
+    "winning_side_requirement": "at least 500 cp non-king material and at least one rook or queen",
+    "edge_weight_cp": 16,
+    "king_proximity_weight_cp": 8,
+    "maximum_geometric_bonus_cp": 88,
+    "implementation": "O(1) evaluation-time gate using incrementally maintained non-king material/major-count summaries in unused NNUE accumulator metadata slots"
+  },
+  "base_stage3_provenance": {
+    "engine": "Sage Stage 3",
+    "code_origin": "User-owned Fable comparison search as supplied with Sage 150M, incrementally modified with AI assistance. Not an independent rewrite and not third-party engine code.",
+    "training": {
+      "checkpoint_sha256": "63701a4e923a1f0f547b83e08a24dda1cef461bd4ee2fcdf6b0ac2c55ef23e3b",
+      "contract": {
+        "baseline_sha256": "008cff7e5229b313a4d40952216175d0e2322ae938ed1a2013097003262ee52d",
+        "cp_scale": 400,
+        "hidden": 256,
+        "inputs": 6144,
+        "king_buckets": 8,
+        "king_region": "2*(rank//2)+(file//4)",
+        "name": "sage",
+        "orientation": "black: colour-swap, rank-flip XOR56; no file mirror",
+        "output": "B_stm + 400 * (dot(SCReLU(acc_stm,acc_other), head[bucket])+bias[bucket])",
+        "output_buckets": 8,
+        "output_region": "min(7,max(0,(pieces-2)//4))",
+        "qa": 255,
+        "qb": 4096,
+        "version": "sl-v1"
+      },
+      "dataset": "b58b12983d37f55fc4de3e4fb9baa024206c29dc1c8ca27570acccfb22d50b69",
+      "trained_from_scratch": true,
+      "training": {
+        "epoch": 1,
+        "row": 0,
+        "samples": 150000000,
+        "shard": 0,
+        "steps": 73777
+      },
+      "verification": {
+        "accumulator_abs_bound": 17801,
+        "max_abs_cp": 14.9974365234375,
+        "mean_abs_cp": 2.0352604943990706,
+        "p99_abs_cp": 7.332896118164051,
+        "passed": true,
+        "rows": 20000,
+        "scaled_dot_abs_bound": 9387841320000,
+        "sign_flip_outside_30cp": 0.0
+      }
+    },
+    "weights_sha256": "a125eec4724273573931c69535c88a5847bc6a297b9bce4cfa1ecb97f130c662",
+    "retraining_performed": false,
+    "source_hashes": {
+      "zsearch.py": "65248148cd758aa1a8cfccc73a0d623d1043b57ede227f93cfd9e95894c349ba",
+      "agent.py": "eafa5ea1f8c83b17a005d6bf01c9fee9da13bdb5fa61a851c2f41a7b9160712e",
+      "sl_spec.py": "b1d2c314d56a04937975e1ba6fcc5259d96510f3c2913c48d370b1e5e176cc8b",
+      "zboard.py": "e6d715868a431f9977b59d91ed27f8a624ec27da06804abde783221057daeabd",
+      "zengine.py": "de1b2b0ff2b332284dff8f3169680fb7b53e37bbaa9c5a2d14443d077c98add2",
+      "zeval.py": "427f761900b7300af051183780bc770be4b92d8b129c07ac00937a407c706435"
+    },
+    "status": "Bounded local validation only. Equal-clock playing strength requires user matches."
+  },
+  "source_hashes": {
+    "agent.py": "587f72f05291ff66127f250be130fe9c3596737b0c0bd72453a5fb50941b02f0",
+    "sl_spec.py": "b1d2c314d56a04937975e1ba6fcc5259d96510f3c2913c48d370b1e5e176cc8b",
+    "weights.npz": "a125eec4724273573931c69535c88a5847bc6a297b9bce4cfa1ecb97f130c662",
+    "zboard.py": "e6d715868a431f9977b59d91ed27f8a624ec27da06804abde783221057daeabd",
+    "zengine.py": "de1b2b0ff2b332284dff8f3169680fb7b53e37bbaa9c5a2d14443d077c98add2",
+    "zeval.py": "0f3ad5fd710935cfc709ad2e24343d89f08abc90fcb1d33bc98c5d001c179fdd",
+    "zsearch.py": "65248148cd758aa1a8cfccc73a0d623d1043b57ede227f93cfd9e95894c349ba"
+  }
+}

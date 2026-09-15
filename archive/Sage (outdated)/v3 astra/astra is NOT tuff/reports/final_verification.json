@@ -1,0 +1,11 @@
+{
+  "perft_positions": 5,
+  "perft_leaf_nodes": 410227,
+  "random_positions": 1660,
+  "random_transitions": 1659,
+  "independent_training_contract_evaluations": 100,
+  "legal_ep_hash_regression": "passed",
+  "draw_and_budget_regressions": "passed",
+  "mate_in_one": 2,
+  "seconds_after_import": 5.003
+}

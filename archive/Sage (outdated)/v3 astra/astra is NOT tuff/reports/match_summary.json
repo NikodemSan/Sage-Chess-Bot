@@ -1,0 +1,523 @@
+[
+  {
+    "label": "Checkpoint test: 150M vs 50M, experimental search",
+    "settings": {
+      "opponent": "SageFusion",
+      "model": "150m",
+      "opponent_model": "50m",
+      "games": 6,
+      "seconds": 60.0,
+      "increment": 0.1,
+      "fixed_ms": 70.0,
+      "ply_cap": 300,
+      "output": "checkpoints.json"
+    },
+    "totals": {
+      "candidate_wins": 2,
+      "draws": 3,
+      "opponent_wins": 1
+    },
+    "games": [
+      {
+        "game": 1,
+        "result": "1-0",
+        "candidate_white": true,
+        "plies": 235,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 2,
+        "result": "1/2-1/2",
+        "candidate_white": false,
+        "plies": 213,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 3,
+        "result": "1-0",
+        "candidate_white": true,
+        "plies": 101,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 4,
+        "result": "1/2-1/2",
+        "candidate_white": false,
+        "plies": 117,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 5,
+        "result": "0-1",
+        "candidate_white": true,
+        "plies": 172,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 6,
+        "result": "1/2-1/2",
+        "candidate_white": false,
+        "plies": 122,
+        "failure": null,
+        "capped": false
+      }
+    ]
+  },
+  {
+    "label": "75/25 ensemble vs 150M, experimental search",
+    "settings": {
+      "opponent": "SageFusion",
+      "model": "ensemble",
+      "opponent_model": "150m",
+      "games": 6,
+      "seconds": 60.0,
+      "increment": 0.1,
+      "fixed_ms": 70.0,
+      "ply_cap": 300,
+      "output": "ensemble.json"
+    },
+    "totals": {
+      "candidate_wins": 2,
+      "draws": 2,
+      "opponent_wins": 2
+    },
+    "games": [
+      {
+        "game": 1,
+        "result": "0-1",
+        "candidate_white": true,
+        "plies": 156,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 2,
+        "result": "0-1",
+        "candidate_white": false,
+        "plies": 192,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 3,
+        "result": "0-1",
+        "candidate_white": true,
+        "plies": 78,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 4,
+        "result": "1/2-1/2",
+        "candidate_white": false,
+        "plies": 144,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 5,
+        "result": "1/2-1/2",
+        "candidate_white": true,
+        "plies": 158,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 6,
+        "result": "0-1",
+        "candidate_white": false,
+        "plies": 110,
+        "failure": null,
+        "capped": false
+      }
+    ]
+  },
+  {
+    "label": "Rejected search experiment 1 vs original 150M",
+    "settings": {
+      "opponent": "local_150m",
+      "model": "150m",
+      "opponent_model": "150m",
+      "games": 8,
+      "seconds": 60.0,
+      "increment": 0.1,
+      "fixed_ms": 100.0,
+      "ply_cap": 400,
+      "output": "search_upgrade.json"
+    },
+    "totals": {
+      "candidate_wins": 1,
+      "draws": 4,
+      "opponent_wins": 3
+    },
+    "games": [
+      {
+        "game": 1,
+        "result": "0-1",
+        "candidate_white": true,
+        "plies": 112,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 2,
+        "result": "1/2-1/2",
+        "candidate_white": false,
+        "plies": 116,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 3,
+        "result": "1/2-1/2",
+        "candidate_white": true,
+        "plies": 101,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 4,
+        "result": "1/2-1/2",
+        "candidate_white": false,
+        "plies": 186,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 5,
+        "result": "1/2-1/2",
+        "candidate_white": true,
+        "plies": 144,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 6,
+        "result": "1-0",
+        "candidate_white": false,
+        "plies": 117,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 7,
+        "result": "0-1",
+        "candidate_white": true,
+        "plies": 122,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 8,
+        "result": "0-1",
+        "candidate_white": false,
+        "plies": 160,
+        "failure": null,
+        "capped": false
+      }
+    ]
+  },
+  {
+    "label": "Rejected search experiment 2 vs original 150M",
+    "settings": {
+      "opponent": "local_150m",
+      "model": "150m",
+      "opponent_model": "150m",
+      "games": 8,
+      "seconds": 60.0,
+      "increment": 0.1,
+      "fixed_ms": 100.0,
+      "ply_cap": 400,
+      "output": "search_final.json"
+    },
+    "totals": {
+      "candidate_wins": 0,
+      "draws": 5,
+      "opponent_wins": 3
+    },
+    "games": [
+      {
+        "game": 1,
+        "result": "1/2-1/2",
+        "candidate_white": true,
+        "plies": 47,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 2,
+        "result": "1-0",
+        "candidate_white": false,
+        "plies": 175,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 3,
+        "result": "1/2-1/2",
+        "candidate_white": true,
+        "plies": 119,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 4,
+        "result": "1-0",
+        "candidate_white": false,
+        "plies": 109,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 5,
+        "result": "1/2-1/2",
+        "candidate_white": true,
+        "plies": 160,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 6,
+        "result": "1/2-1/2",
+        "candidate_white": false,
+        "plies": 61,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 7,
+        "result": "1/2-1/2",
+        "candidate_white": true,
+        "plies": 151,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 8,
+        "result": "1-0",
+        "candidate_white": false,
+        "plies": 209,
+        "failure": null,
+        "capped": false
+      }
+    ]
+  },
+  {
+    "label": "Rejected search experiment 3 vs original 150M",
+    "settings": {
+      "opponent": "local_150m",
+      "api": false,
+      "fresh_workers": false,
+      "model": "150m",
+      "opponent_model": "150m",
+      "games": 8,
+      "seconds": 60.0,
+      "increment": 0.1,
+      "fixed_ms": 100.0,
+      "ply_cap": 400,
+      "output": "search_candidate3.json"
+    },
+    "totals": {
+      "candidate_wins": 0,
+      "draws": 3,
+      "opponent_wins": 5
+    },
+    "games": [
+      {
+        "game": 1,
+        "result": "0-1",
+        "candidate_white": true,
+        "plies": 132,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 2,
+        "result": "1/2-1/2",
+        "candidate_white": false,
+        "plies": 190,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 3,
+        "result": "0-1",
+        "candidate_white": true,
+        "plies": 200,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 4,
+        "result": "1/2-1/2",
+        "candidate_white": false,
+        "plies": 102,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 5,
+        "result": "0-1",
+        "candidate_white": true,
+        "plies": 96,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 6,
+        "result": "1/2-1/2",
+        "candidate_white": false,
+        "plies": 98,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 7,
+        "result": "0-1",
+        "candidate_white": true,
+        "plies": 120,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 8,
+        "result": "1-0",
+        "candidate_white": false,
+        "plies": 83,
+        "failure": null,
+        "capped": false
+      }
+    ]
+  },
+  {
+    "label": "Retained search vs original 150M",
+    "settings": {
+      "opponent": "local_150m",
+      "api": false,
+      "fresh_workers": false,
+      "model": "150m",
+      "opponent_model": "150m",
+      "games": 8,
+      "seconds": 60.0,
+      "increment": 0.1,
+      "fixed_ms": 100.0,
+      "ply_cap": 400,
+      "output": "final_search.json"
+    },
+    "totals": {
+      "candidate_wins": 1,
+      "draws": 7,
+      "opponent_wins": 0
+    },
+    "games": [
+      {
+        "game": 1,
+        "result": "1/2-1/2",
+        "candidate_white": true,
+        "plies": 131,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 2,
+        "result": "1/2-1/2",
+        "candidate_white": false,
+        "plies": 63,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 3,
+        "result": "1/2-1/2",
+        "candidate_white": true,
+        "plies": 163,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 4,
+        "result": "1/2-1/2",
+        "candidate_white": false,
+        "plies": 181,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 5,
+        "result": "1/2-1/2",
+        "candidate_white": true,
+        "plies": 92,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 6,
+        "result": "0-1",
+        "candidate_white": false,
+        "plies": 130,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 7,
+        "result": "1/2-1/2",
+        "candidate_white": true,
+        "plies": 195,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 8,
+        "result": "1/2-1/2",
+        "candidate_white": false,
+        "plies": 116,
+        "failure": null,
+        "capped": false
+      }
+    ]
+  },
+  {
+    "label": "Final API at 120s + 0.5s vs original 150M",
+    "settings": {
+      "opponent": "local_150m",
+      "api": true,
+      "fresh_workers": true,
+      "model": "150m",
+      "opponent_model": "150m",
+      "games": 2,
+      "seconds": 120.0,
+      "increment": 0.5,
+      "fixed_ms": 0,
+      "ply_cap": 600,
+      "output": "final_competition_clock.json"
+    },
+    "totals": {
+      "candidate_wins": 1,
+      "draws": 1,
+      "opponent_wins": 0
+    },
+    "games": [
+      {
+        "game": 1,
+        "result": "1-0",
+        "candidate_white": true,
+        "plies": 127,
+        "failure": null,
+        "capped": false
+      },
+      {
+        "game": 2,
+        "result": "1/2-1/2",
+        "candidate_white": false,
+        "plies": 99,
+        "failure": null,
+        "capped": false
+      }
+    ]
+  }
+]

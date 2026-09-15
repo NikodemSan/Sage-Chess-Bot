@@ -1,0 +1,43 @@
+{
+  "code_origin": "Team-owned Fable reference board/search, used only for local comparison.",
+  "status": "LOCAL ONLY. The intended competition search will be independently implemented.",
+  "training": {
+    "checkpoint_sha256": "63701a4e923a1f0f547b83e08a24dda1cef461bd4ee2fcdf6b0ac2c55ef23e3b",
+    "contract": {
+      "baseline_sha256": "008cff7e5229b313a4d40952216175d0e2322ae938ed1a2013097003262ee52d",
+      "cp_scale": 400,
+      "hidden": 256,
+      "inputs": 6144,
+      "king_buckets": 8,
+      "king_region": "2*(rank//2)+(file//4)",
+      "name": "sage",
+      "orientation": "black: colour-swap, rank-flip XOR56; no file mirror",
+      "output": "B_stm + 400 * (dot(SCReLU(acc_stm,acc_other), head[bucket])+bias[bucket])",
+      "output_buckets": 8,
+      "output_region": "min(7,max(0,(pieces-2)//4))",
+      "qa": 255,
+      "qb": 4096,
+      "version": "sl-v1"
+    },
+    "dataset": "b58b12983d37f55fc4de3e4fb9baa024206c29dc1c8ca27570acccfb22d50b69",
+    "trained_from_scratch": true,
+    "training": {
+      "epoch": 1,
+      "row": 0,
+      "samples": 150000000,
+      "shard": 0,
+      "steps": 73777
+    },
+    "verification": {
+      "accumulator_abs_bound": 17801,
+      "max_abs_cp": 14.9974365234375,
+      "mean_abs_cp": 2.0352604943990706,
+      "p99_abs_cp": 7.332896118164051,
+      "passed": true,
+      "rows": 20000,
+      "scaled_dot_abs_bound": 9387841320000,
+      "sign_flip_outside_30cp": 0.0
+    }
+  },
+  "weights_sha256": "a125eec4724273573931c69535c88a5847bc6a297b9bce4cfa1ecb97f130c662"
+}
