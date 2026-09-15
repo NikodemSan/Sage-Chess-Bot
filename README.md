@@ -1,13 +1,13 @@
 # Sage
 ![alt text](https://media.licdn.com/dms/image/v2/D4E22AQGgXqpJbxjGug/feedshare-shrink_800/B4EaCfADRmG4Ac-/0/1789373986192?e=1790812800&v=beta&t=RjHRw5Rjjxho3mBh70A2JXYfVSmu6yEA1cO-HltwNKg)
 
-Sage is a Python/Numba chess engine built for the AI Chessathon. This repository contains the final competition engine as well as most of the models and major experimental builds we made during the hackathon.
+Sage is a Python/Numba chess engine built for the AI Chessathon. This repository contains the final competition engine, along with most of the models and larger experiments we made during the hackathon.
 
-The version of Sage at the root of this repository is the final submitted competition build. Earlier engines, intermediate versions, and experiments are preserved under the `archive/` folder.
+The version of Sage in the root of the repository is the final submitted build. Older engines and experiments are in the `archive/` folder.
 
-The project did **not** begin on GitHub. Most of the development happened locally using frozen `.zip` submissions, experiment folders, hashes, benchmarks, match logs, and test packages. This repository was created afterwards, so the Git commit history is not the original development chronology. This README is intended to preserve that chronology.
+This project did not start on GitHub. Most of it was developed locally, usually as folders and frozen `.zip` submissions, so the Git history here does not match the real development timeline. I have tried to reconstruct that timeline below from the builds, hashes, benchmarks and match results we kept.
 
-The overall path was roughly:
+Roughly, it went like this:
 
 ```text
 First submission
@@ -20,9 +20,9 @@ Sage architecture reset
       ↓
 search / correctness iterations
       ↓
-Stage 3 breakthrough
+Stage 3
       ↓
-endgame conversion work
+endgame work
       ↓
 anti-repetition work
       ↓
@@ -33,13 +33,13 @@ R2
 Final Sage build
 ```
 
-The most important change in the whole project was not one search tweak or one extra training run. It was the decision to stop making the evaluator larger and instead build a much cheaper architecture that let the search do more work.
-
 ---
 
 # The first submission
 
-The oldest preserved engine in the archive is simply `submission.zip`. It already used a real NNUE-style evaluator, incremental accumulators, iterative deepening, PVS / alpha-beta, a transposition table, null-move pruning, late move reductions, killers, history, quiescence search, Zobrist hashing, and Numba-compiled hot paths. Its evaluator was a large king-relative HalfKP network with roughly 40,960 sparse features feeding 256-wide accumulators for both perspectives and then a linear output:
+The oldest engine I still have is just called `submission.zip`. It was already using an NNUE-style evaluator with incremental accumulators, and the search had most of the things you would expect from a proper engine: iterative deepening, PVS / alpha-beta, a transposition table, null move, LMR, killers, history, quiescence search and Zobrist hashing.
+
+The evaluator was a large king-relative HalfKP network:
 
 ```text
 40,960 HalfKP features
@@ -53,13 +53,13 @@ clipped activation
 1
 ```
 
-That first engine established the basic approach we kept for the rest of the project: use Python for the overall engine, but keep the expensive chess logic and NNUE inference in Numba-friendly code so that the bot could still search seriously under competition time controls.
+A lot of the code was written around the fact that Python itself was too slow for the hot path. The board/search/eval code therefore leaned heavily on Numba. That general setup stayed with the project even when the network architecture changed several times.
 
 ---
 
 # Fable
 
-Fable was the first major redesign. Instead of using the very large king-relative HalfKP feature space, it used a much smaller neural evaluator based on ordinary piece-square inputs. Its network was approximately:
+Fable was the first big change in direction. It used a much smaller evaluator based on normal piece-square inputs rather than the huge king-relative feature space:
 
 ```text
 768 piece-square inputs
@@ -73,13 +73,15 @@ SCReLU
 1
 ```
 
-The neural score was blended with a classical tapered material / PSQT evaluation, so Fable was deliberately a hybrid rather than a purely neural engine. The later Fable variants experimented with things like stronger draw handling, larger transposition tables, Static Exchange Evaluation, capture-history ordering, Syzygy support, opening books, and other search refinements. Those versions were useful, but they were not the central direction of the project. The main thing we learned from Fable was that **a smaller evaluator could search much faster and that cheap search-friendly evaluation mattered at least as much as raw network size**. Fable became an important comparison point when we later evaluated Parable.
+The NN output was blended with a normal tapered material / PSQT evaluation, so Fable was more of a hybrid engine. We made several Fable versions after that. Some tried better draw handling, SEE, capture history, bigger TTs, Syzygy, opening books and other search changes.
+
+I do not think the individual Fable versions are that important to the final story. What mattered was that Fable was cheap to evaluate and could search quickly. It gave us a useful reference point later, especially when Parable became much more expensive per node.
 
 ---
 
 # Parable
 
-Parable was the opposite direction: we tried a much larger learned evaluator again, this time with mirrored king-relative HalfKP features and two extra hidden layers. The main architecture was:
+Parable went back in the other direction. We built a much larger NNUE with mirrored king-relative HalfKP features and two extra hidden layers:
 
 ```text
 20,480 mirrored HalfKP inputs
@@ -93,13 +95,19 @@ Parable was the opposite direction: we tried a much larger learned evaluator aga
            1
 ```
 
-This was roughly a 5.26 million parameter network. We iterated on Parable through several versions, including more training and multiple search refinements, but the basic architecture stayed similar. Parable did improve, but the key lesson was that the larger evaluator was expensive enough to noticeably reduce search throughput. In practice, we were paying a lot of CPU time per node without getting enough playing strength back from the extra network capacity. Comparisons against the smaller Fable line made this increasingly obvious. The most important outcome of Parable was therefore not a particular version number: it was the decision to **stop trying to rescue the large evaluator and completely redesign the architecture**.
+It was around 5.26 million parameters. We trained and tuned several Parable versions and changed the search around it, but the network shape stayed broadly the same.
+
+Parable got better over time, but it was expensive. The engine was spending a lot more time evaluating each node, and the extra network capacity was not making up for the loss in search speed. That became hard to ignore when we compared it with smaller engines such as Fable.
+
+Eventually we stopped trying to keep improving that architecture and started again with Sage.
 
 ---
 
 # Sage — the architecture reset
 
-Sage was the clean reset. Instead of full king-square HalfKP, it used only eight coarse king regions, which reduced the sparse input space to 6,144 features. It also removed Parable's two 32-wide hidden layers. The final Sage family used:
+Sage was the rebuild. Instead of using a separate king bucket for every king square, it used eight coarse king regions. That cut the sparse feature count down to 6,144. We also removed Parable's two 32-wide hidden layers.
+
+The Sage network was:
 
 ```text
 6,144 king-bucketed inputs
@@ -115,61 +123,79 @@ SCReLU
 1
 ```
 
-In compact form:
+Or more compactly:
 
 ```text
 6144 → 256×2 → SCReLU → 512 → bucketed linear → 1
 ```
 
-Sage was also trained as a **residual evaluator**. Instead of asking the network to learn material and every basic positional fact from scratch, we kept a fixed material / PST baseline and trained the NNUE to learn the correction on top of it. The final Sage network was roughly 1.58 million parameters, much smaller than Parable. The 50M and 150M versions were essentially the same architecture; the important difference was training amount and the maturity of the search around them. The 150M checkpoint became the long-lived network used by almost every later Sage experiment, including the final bot.
+Sage also used a fixed material / PST evaluation underneath the network. The NN was trained as a residual on top of that baseline instead of being responsible for the whole evaluation by itself.
+
+The network ended up at roughly 1.58 million parameters. We had 50M and 150M training versions, but they were the same basic architecture. The 150M weights became the ones we kept using for almost all of the later work.
 
 ---
 
 # The Sage breakthrough
 
-Once the 150M network was good enough, most of the development shifted away from neural architecture and into search. We experimented with faster and slower refactors, stricter draw correctness, history-aware transposition-table reuse, multiple TT contexts, different memory layouts, continuation-history ordering, move-ordering changes, and endgame policies. Some ideas were theoretically cleaner but made the engine slower. Stage 2C was the clearest example: it preserved the intended logic but roughly halved search throughput, so it was abandoned. Stage 4 improved repetition and fifty-move correctness but lost too much NPS. Stage 5 and Stage 6 explored history-aware TT layouts and cache locality. Stage 7D added continuation-history style move ordering. These experiments were useful, but the most important result was that **Stage 3 emerged as the strongest practical search core**. It was faster than the earlier Sage search, retained the exact 150M network, and gave a repeatable throughput gain of around 7% without an observed strength regression. From that point onward, Stage 3 became the stable base we kept returning to whenever a more complicated branch failed to justify itself.
+Once the 150M network was in place, we mostly stopped changing the NN and started spending our time on search.
+
+There were a lot of branches. Stage 2C was a refactor that looked fine logically but was much slower in practice, so it was dropped. Stage 4 tried to make repetition and fifty-move handling more correct, but the history-aware TT checks cost too much search speed. Stage 5 and Stage 6 kept working on the TT/context problem and memory layout. Stage 7D added continuation-history style ordering.
+
+The version that kept standing out was Stage 3. It used the same 150M network, searched about 7% faster than the earlier Sage search in our tests, and did not show a strength loss in the match testing we ran. After trying several newer branches, we kept ending up back at Stage 3 because it was fast and reliable.
+
+That became the search base for the later engine.
 
 ---
 
 # Endgame conversion
 
-After search speed improved, a different weakness became obvious: Sage could evaluate a position as clearly winning without always converting it cleanly. It could shuffle, delay irreversible progress, or allow the fifty-move counter to become dangerous. Stage 8E attacked this with a very narrow handcrafted mop-up bonus for clearly winning low-material positions, especially bare-king endings. The bonus rewarded pushing the defending king toward the edge and bringing the winning king closer. It was deliberately small and heavily gated rather than being a general-purpose endgame evaluator.
+The next problem was not really search speed. It was converting positions that Sage already knew were winning.
 
-Stage 8F then experimented with encouraging progress moves such as pawn pushes at the root when the fifty-move clock was rising. That showed an important distinction: changing move ordering can change where search effort goes, but it does not necessarily make the engine choose the right irreversible move. Rather than keep stacking new search ideas on top of the Stage 7 line, we went back to the strongest stable core and created **Stage 3E: exact Stage 3 search plus the useful Stage 8E mop-up evaluation**.
+In some low-material games the eval could be huge, but the engine would still shuffle around, make very slow progress, or let the fifty-move counter get uncomfortably high. Stage 8E added a small mop-up term for obvious winning endings, especially positions where one side was basically down to a bare king.
+
+The bonus pushed the losing king toward the edge and encouraged the winning king to get closer. It was intentionally narrow rather than a replacement endgame evaluator.
+
+Stage 8F tried something different: giving progress moves such as pawn pushes more preference at the root when the fifty-move clock was getting high. That could change the search effort, but it did not reliably make Sage choose the move we actually wanted.
+
+So instead of keeping the whole Stage 7/8 search line, we copied the useful Stage 8E mop-up idea back onto Stage 3. That became Stage 3E.
 
 ---
 
 # Anti-repetition
 
-The next weakness was repetition in positions the engine already believed were winning. We did not want to simply ban repetition, because repetition can be the correct result when the engine is worse or drawing. Instead, the later ER2 / R2 approach was conservative: run the normal Stage 3E search first, and only afterwards intervene if the selected root move revisits recent reversible history while Sage is already clearly ahead.
+Even with better endgame evaluation, Sage could still repeat in positions where it was clearly ahead.
 
-The rescue logic was deliberately narrow. It only activates when the normal search has reached sufficient depth, the score is clearly positive, the selected move repeats, and a fresh legal alternative exists. It then performs a small capped search excluding revisiting root moves. The alternative is accepted only if that rescue search still shows a clearly winning position. This gave us a way to avoid obvious winning-position shuffles without changing normal recursive search behaviour.
+We did not want to make repetition illegal or always bad. If the engine is worse, repeating can obviously be the right move. The eventual ER2 / R2 solution only does anything after the normal Stage 3E search is finished.
+
+If the chosen root move goes back to a recent reversible position, Sage is already clearly ahead, the search completed deeply enough, and there is another legal move available, the engine runs a small extra search without the repeating root moves. It only switches moves if that second search still says the fresh move is clearly winning.
+
+So normal search still decides the move first. The anti-repeat code is more of a last check for obvious winning-position loops.
 
 ---
 
 # Qualification build
 
-By the qualification stage, the project had converged on a much simpler answer than the long list of experiments might suggest:
+By the time we were preparing the qualification build, the engine had more or less settled into:
 
 ```text
 Stage 3 search
 +
-Sage 150M residual NNUE
+Sage 150M NNUE
 +
 endgame mop-up
 +
 anti-repetition protection
 ```
 
-That combination represented the strongest ideas we had actually validated. Instead of using every later experimental search feature, we kept the Stage 3 core and transplanted only the changes that addressed real observed weaknesses: conversion and avoidable repetition.
+A lot of newer experiments existed by then, but we did not just use the newest branch. Stage 3 was still the search we trusted most, and the useful later changes were added back onto it.
 
-That was the major qualification-era breakthrough: **the final direction was not the newest search branch, but the strongest proven search core plus a few narrow fixes.**
+That was the version of Sage we took into the qualification stage.
 
 ---
 
 # Finals: R2
 
-After qualification, the engine was frozen into the R2 / Stage3ER2 line for the finals phase. The preserved R2 package combines:
+After qualifying, we kept working on that same line for the final. R2 / Stage3ER2 was:
 
 ```text
 Stage 3 search
@@ -181,15 +207,13 @@ Stage 8E-derived mop-up
 ER2 root-only anti-repeat rescue
 ```
 
-The neural architecture was still exactly the same Sage architecture:
+The NN architecture itself had not changed:
 
 ```text
 6144 → 256×2 → SCReLU → 512 → 8 bucketed output heads → 1
 ```
 
-At this point, the project was no longer trying to make the network larger. The improvements were about stability, conversion, repetition handling, runtime behaviour, and preserving the search strength we already had.
-
-In the controlled R2 vs Stage 3E development arena:
+In our R2 vs Stage 3E match:
 
 ```text
 20 pairs / 40 games
@@ -202,15 +226,15 @@ R2:
 Score: 55%
 ```
 
-The anti-repeat rescue itself was rare and cheap relative to the total search workload, which was exactly what we wanted from it.
+The anti-repeat code only triggered occasionally and used a tiny fraction of the total search time, which was what we wanted. It was there to catch a specific failure mode rather than reshape the whole search.
 
 ---
 
 # Final Sage build
 
-The final Sage build is the last evolution of the same Stage3ER2 architecture rather than another neural redesign.
+The final submitted Sage was still based on Stage3ER2. We did not change the NN again.
 
-It still uses the exact Sage150 network and the same overall evaluator:
+It still used:
 
 ```text
 6,144 sparse king-bucketed features
@@ -230,26 +254,22 @@ fixed material / PST baseline
 narrow endgame mop-up terms
 ```
 
-The final work focused on engineering and edge cases rather than changing the network. The preserved final Sage build includes faster Numba initialisation work, a larger transposition table, improved search-tree repetition handling, and additional endgame conversion logic. Some extra mop-up work was added for endings such as two bishops against king and bishop + knight against king. Not every experimental ending routine was equally reliable, but the main R2 / Stage 3 / Sage150 foundation stayed intact.
+The last changes were mostly engineering work and a few edge cases. We worked on faster Numba initialisation, increased the transposition table size, changed how repetition inside the current search tree was handled, and added some extra endgame conversion code.
 
-The final bot can therefore be thought of as:
+There was also work on endings such as two bishops vs king and bishop + knight vs king. The two-bishop case worked better; the bishop + knight code was less reliable at normal game depth, so I would not describe that part as solved.
 
-> **A compact residual NNUE attached to a heavily optimised selective alpha-beta search, with narrow endgame and anti-repetition safeguards added only where testing showed a real conversion problem.**
+The final engine was basically the Sage150 evaluator we had been using for a long time, attached to the Stage 3 search, with the endgame and repetition fixes that had proved useful.
 
 ---
 
 # What the project taught us
 
-The strongest lesson was that a chess engine is not just its evaluator.
+The biggest thing we changed our minds about was network size. Early on, making the NN stronger mostly meant making it bigger. Parable pushed that quite far. In the end, Sage worked better for us because it was much cheaper and gave the search more time.
 
-Parable had more neural capacity than Sage, but Sage was cheap enough that the search could do substantially more work. Once Sage150 was strong and stable, most of the gains came from search speed, move ordering, draw handling, conversion and reliability rather than from making the network larger.
+We also had plenty of changes that looked good in isolation and then did not survive testing. Some lost too much NPS. Some used more memory. Some were more correct but made the engine weaker under the actual clock. Some just did not change the match results enough to be worth keeping.
 
-A second major lesson was that theoretically cleaner changes could still make the engine worse. History-aware TT correctness, larger tables, more complicated move ordering, extra verification searches, and larger integration packages all had costs. We ended up rejecting many ideas that looked attractive on paper because they either lost NPS, increased memory pressure, or failed to improve paired games.
+By the end we were fairly conservative about promoting changes. We normally wanted a correctness check, a fixed-depth comparison, performance numbers and games before replacing the current build.
 
-The development rule gradually became:
-
-> **A feature is not promoted because it sounds stronger. It is promoted because it survives correctness testing, fixed-depth comparison, performance measurement, and actual games.**
-
-That is why the final engine is a mixture of old and new ideas. Stage 3 survived because it was fast and strong. Stage 8E survived because it improved conversion. ER2 survived because it addressed repetition without disturbing normal search. Everything else had to justify its cost.
+That is why the final Sage still contains a fairly old search core. Stage 3 kept winning its place back. The later additions were mostly small fixes for problems we had actually seen in games rather than a full rewrite every time.
 
 ---
