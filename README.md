@@ -1,4 +1,4 @@
-\# Sage
+# Sage
 
 ![alt text](https://media.licdn.com/dms/image/v2/D4E22AQGgXqpJbxjGug/feedshare-shrink_800/B4EaCfADRmG4Ac-/0/1789373986192?e=1790812800&v=beta&t=RjHRw5Rjjxho3mBh70A2JXYfVSmu6yEA1cO-HltwNKg)
 
@@ -16,11 +16,11 @@ This project did not start on GitHub. Most of it was developed locally, usually 
 
 
 
-\---
+---
 
 
 
-\# The first submission
+# The first submission
 
 
 
@@ -36,19 +36,19 @@ The evaluator was a large king-relative HalfKP network:
 
 40,960 HalfKP features
 
-&#x20;         ↓
+          ↓
 
 256 accumulator per perspective
 
-&#x20;         ↓
+          ↓
 
 clipped activation
 
-&#x20;         ↓
+          ↓
 
 512 combined values
 
-&#x20;         ↓
+          ↓
 
 1
 
@@ -60,11 +60,11 @@ A lot of the code was written around the fact that Python itself was too slow fo
 
 
 
-\---
+---
 
 
 
-\# Fable
+# Fable
 
 
 
@@ -76,19 +76,19 @@ Fable was the first big change in direction. It used a much smaller evaluator ba
 
 768 piece-square inputs
 
-&#x20;      ↓
+       ↓
 
 256 accumulator per perspective
 
-&#x20;      ↓
+       ↓
 
 SCReLU
 
-&#x20;      ↓
+       ↓
 
 512 combined activations
 
-&#x20;      ↓
+       ↓
 
 1
 
@@ -104,11 +104,11 @@ I do not think the individual Fable versions are that important to the final sto
 
 
 
-\---
+---
 
 
 
-\# Parable
+# Parable
 
 
 
@@ -120,21 +120,21 @@ Parable went back in the other direction. We built a much larger NNUE with mirro
 
 20,480 mirrored HalfKP inputs
 
-&#x20;         ↓
+          ↓
 
-&#x20;        256
+         256
 
-&#x20;         ↓
+          ↓
 
-&#x20;         32
+          32
 
-&#x20;         ↓
+          ↓
 
-&#x20;         32
+          32
 
-&#x20;         ↓
+          ↓
 
-&#x20;          1
+           1
 
 ```
 
@@ -152,11 +152,11 @@ Eventually we stopped trying to keep improving that architecture and started aga
 
 
 
-\---
+---
 
 
 
-\# Sage - the fresh start
+# Sage - the fresh start
 
 
 
@@ -172,23 +172,23 @@ The Sage network was:
 
 6,144 king-bucketed inputs
 
-&#x20;         ↓
+          ↓
 
 256 accumulator per perspective
 
-&#x20;         ↓
+          ↓
 
 SCReLU
 
-&#x20;         ↓
+          ↓
 
 512 combined activations
 
-&#x20;         ↓
+          ↓
 
 1 of 8 piece-count output heads
 
-&#x20;         ↓
+          ↓
 
 1
 
@@ -204,11 +204,11 @@ The network ended up at roughly 1.58 million parameters. We had 50M and 150M tra
 
 
 
-\---
+---
 
 
 
-\# The Sage breakthrough
+# The Sage breakthrough
 
 
 
@@ -224,11 +224,11 @@ The version that kept standing out was Stage 3. It used the same 150M network, s
 
 
 
-\---
+---
 
 
 
-\# Endgame conversion
+# Endgame conversion
 
 
 
@@ -252,11 +252,11 @@ So instead of keeping the whole Stage 7/8 search line, we copied the useful Stag
 
 
 
-\---
+---
 
 
 
-\# Anti-repetition
+# Anti-repetition
 
 
 
@@ -276,11 +276,11 @@ So normal search still decides the move first. The anti-repeat code is more of a
 
 
 
-\---
+---
 
 
 
-\# Qualification build
+# Qualification build
 
 
 
@@ -292,15 +292,15 @@ By the time we were preparing the qualification build, the engine had more or le
 
 Stage 3 search
 
-\+
++
 
 Sage 150M NNUE
 
-\+
++
 
 endgame mop-up
 
-\+
++
 
 anti-repetition protection
 
@@ -316,9 +316,9 @@ We ended the qualification stage in **49th place**, only just above the cutoff f
 
 
 
-\---
+---
 
-\# Finals: R2
+# Finals: R2
 
 
 
@@ -330,15 +330,15 @@ Once we had qualified, we kept working on the same basic engine rather than star
 
 Stage 3 search
 
-\+
++
 
 Sage150 NNUE
 
-\+
++
 
 Stage 8E-derived mop-up
 
-\+
++
 
 ER2 root-only anti-repeat rescue
 
@@ -380,9 +380,9 @@ There was also a new constraint for the final that we had not been designing aro
 
 
 
-\---
+---
 
-\# Final Sage build
+# Final Sage build
 
 
 
@@ -406,9 +406,9 @@ The final engine was still recognisably the same Sage we had qualified with: the
 
 
 
-\---
+---
 
-\# Final knockout stage
+# Final knockout stage
 
 
 
@@ -424,9 +424,9 @@ Because we had only just qualified in 49th, we ended up with one of the hardest 
 
 
 
-\---
+---
 
-\# What the project taught us
+# What the project taught us
 
 
 
@@ -445,10 +445,10 @@ By the end we were fairly conservative about promoting changes. We normally want
 That is why the final Sage still contains a fairly old search core. Stage 3 kept winning its place back. The later additions were mostly small fixes for problems we had actually seen in games rather than a full rewrite every time.
 
 
-\---
+---
 
 
-\# Final architecture
+# Final architecture
 
 
 
