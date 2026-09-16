@@ -12,7 +12,7 @@ The version of Sage in the root of the repository is the final submitted build. 
 
 
 
-This project did not start on GitHub. Most of it was developed locally, usually as folders and frozen `.zip` submissions, so the Git history here does not match the real development timeline. I have tried to reconstruct that timeline below from the builds, hashes, benchmarks and match results we kept.
+This project did not start on GitHub. Most of it was developed locally, usually as folders and frozen `.zip` submissions, so the Git history here does not match the real development timeline. I have tried to reconstruct that timeline below from the builds, hashes, benchmarks and match results we kept - which is why this has taken me so long.
 
 
 ![alt_text](https://cdn.discordapp.com/attachments/1463290109867593843/1549581999423889529/Screenshot_20260915_022057_Chrome.jpg?ex=6aab3832&is=6aa9e6b2&hm=457bcc035805c6811fbfc9b4d8ecdf8bca0ea60094745ce56e4aef7db83ef9d5&)
