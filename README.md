@@ -16,7 +16,7 @@ This project did not start on GitHub. Most of it was developed locally, usually 
 
 
 ![alt_text](https://cdn.discordapp.com/attachments/1463290109867593843/1549581999423889529/Screenshot_20260915_022057_Chrome.jpg?ex=6aab3832&is=6aa9e6b2&hm=457bcc035805c6811fbfc9b4d8ecdf8bca0ea60094745ce56e4aef7db83ef9d5&)
-![alt_text](https://cdn.discordapp.com/attachments/1463290109867593843/1549581999423889529/Screenshot_20260915_022057_Chrome.jpg?ex=6aab3832&is=6aa9e6b2&hm=457bcc035805c6811fbfc9b4d8ecdf8bca0ea60094745ce56e4aef7db83ef9d5&)
+![alt_text](https://cdn.discordapp.com/attachments/1463290109867593843/1549581999839379456/Screenshot_20260915_022106_Chrome.jpg?ex=6aab3832&is=6aa9e6b2&hm=e9a20b16311975f8bb970ff6f842d59c7f16e4c4aaa883dc0b94593008b60ec4&)
 ---
 
 
