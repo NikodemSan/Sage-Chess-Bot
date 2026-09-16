@@ -1,6 +1,6 @@
 \# Sage
 
-!\[alt text](https://media.licdn.com/dms/image/v2/D4E22AQGgXqpJbxjGug/feedshare-shrink\_800/B4EaCfADRmG4Ac-/0/1789373986192?e=1790812800\&v=beta\&t=RjHRw5Rjjxho3mBh70A2JXYfVSmu6yEA1cO-HltwNKg)
+![alt text](https://media.licdn.com/dms/image/v2/D4E22AQGgXqpJbxjGug/feedshare-shrink_800/B4EaCfADRmG4Ac-/0/1789373986192?e=1790812800&v=beta&t=RjHRw5Rjjxho3mBh70A2JXYfVSmu6yEA1cO-HltwNKg)
 
 
 
